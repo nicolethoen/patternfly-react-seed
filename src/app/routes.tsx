@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Dashboard } from '@app/Dashboard/Dashboard';
-import { Support } from '@app/Support/Support';
-import { GeneralSettings } from '@app/Settings/General/GeneralSettings';
-import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
+import { Documentation } from '@app/Documentation/Documentation';
 import { NotFound } from '@app/NotFound/NotFound';
 
 export interface IAppRoute {
@@ -28,35 +26,16 @@ const routes: AppRouteConfig[] = [
   {
     element: <Dashboard />,
     exact: true,
-    label: 'Dashboard',
+    label: 'Playground',
     path: '/',
-    title: 'PatternFly Seed | Main Dashboard',
+    title: 'Llama stack UI POC | Playground',
   },
   {
-    element: <Support />,
+    element: <Documentation />,
     exact: true,
-    label: 'Support',
-    path: '/support',
-    title: 'PatternFly Seed | Support Page',
-  },
-  {
-    label: 'Settings',
-    routes: [
-      {
-        element: <GeneralSettings />,
-        exact: true,
-        label: 'General',
-        path: '/settings/general',
-        title: 'PatternFly Seed | General Settings',
-      },
-      {
-        element: <ProfileSettings />,
-        exact: true,
-        label: 'Profile',
-        path: '/settings/profile',
-        title: 'PatternFly Seed | Profile Settings',
-      },
-    ],
+    label: 'Documentation',
+    path: '/documentation',
+    title: 'PatternFly Seed | Documentation',
   },
 ];
 
@@ -70,7 +49,7 @@ const AppRoutes = (): React.ReactElement => (
     {flattenedRoutes.map(({ path, element }, idx) => (
       <Route path={path} element={element} key={idx} />
     ))}
-    <Route element={<NotFound />} />
+    <Route path="*" element={<NotFound />} />
   </Routes>
 );
 
