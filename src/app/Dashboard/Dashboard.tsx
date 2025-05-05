@@ -6,6 +6,7 @@ import {
   Title,
   Drawer,
   DrawerContent,
+  DrawerContentBody,
   DrawerPanelContent,
   DrawerPanelBody,
   Form,
@@ -27,6 +28,8 @@ import {
   Stack,
   StackItem,
   SliderOnChangeEvent,
+  Flex,
+  FlexItem
 } from '@patternfly/react-core';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotContent from '@patternfly/chatbot/dist/dynamic/ChatbotContent';
@@ -35,7 +38,11 @@ import ChatbotFooter, { ChatbotFootnote } from '@patternfly/chatbot/dist/dynamic
 import MessageBar from '@patternfly/chatbot/dist/dynamic/MessageBar';
 import MessageBox from '@patternfly/chatbot/dist/dynamic/MessageBox';
 import Message, { MessageProps } from '@patternfly/chatbot/dist/dynamic/Message';
-import { PencilAltIcon, CheckIcon, TimesIcon } from '@patternfly/react-icons';
+import {
+  PencilAltIcon,
+  CheckIcon,
+  TimesIcon,
+} from '@patternfly/react-icons';
 import UserAvatar from '@app/bgimages/user_avatar.svg';
 import RobotIcon from '@app/bgimages/badge-icon.svg';
 
@@ -307,138 +314,80 @@ const Dashboard: React.FunctionComponent = () => {
     setCheckedMcpServers(prev => ({ ...prev, [name]: checked }));
   };
 
-  // Define the content for the right-hand drawer panel
-  const panelContent = (
+  // Settings Panel Content (Accordion) - unchanged logic, just defined here
+  const settingsPanelContent = (
     <DrawerPanelContent isResizable={true} defaultSize={'400px'} minSize={'300px'}>
       <DrawerPanelBody>
         <Accordion asDefinitionList={false}>
+          {/* Model Details Accordion Item */}
           <AccordionItem isExpanded={expandedAccordionItems.includes('model-details-item')}>
-            <AccordionToggle
-              onClick={() => handleAccordionToggle('model-details-item')}
-              id="model-details-item"
-            >
-              <Title headingLevel="h1" size="xl"> Model details </Title>
+            <AccordionToggle onClick={() => handleAccordionToggle('model-details-item')} id="model-details-item" > 
+              <Title headingLevel="h1" size="xl"> Model details </Title> 
             </AccordionToggle>
-            <AccordionContent id="model-details-content">
+            <AccordionContent id="model-details-content" className="pf-v6-u-p-md">
               <Form>
-                <FormGroup label="Model" fieldId="model-select">
-                  <FormSelect
-                    value={selectedModel}
-                    onChange={(_event, value) => setSelectedModel(value)}
-                    aria-label="Select Model"
-                  >
-                    <FormSelectOption key={0} value="" label="Select a model" isDisabled />
-                    <FormSelectOption key={1} value="model-a" label="Model A (GPT-4)" />
-                    <FormSelectOption key={2} value="model-b" label="Model B (Claude)" />
-                    <FormSelectOption key={3} value="model-c" label="Model C (Gemini)" />
-                  </FormSelect>
+                <FormGroup label="Model" fieldId="model-select"> 
+                  <FormSelect value={selectedModel} onChange={(_event, value) => setSelectedModel(value)} aria-label="Select Model" > 
+                    <FormSelectOption key={0} value="" label="Select a model" isDisabled /> 
+                    <FormSelectOption key={1} value="model-a" label="Model A (GPT-4)" /> 
+                    <FormSelectOption key={2} value="model-b" label="Model B (Claude)" /> 
+                    <FormSelectOption key={3} value="model-c" label="Model C (Gemini)" /> 
+                  </FormSelect> 
                 </FormGroup>
-
-                <FormGroup label="System instructions" fieldId="system-instructions">
-                  <InputGroup>
-                    <TextInput
-                      id="system-instructions-input"
-                      type="text"
-                      value={systemInstructions}
-                      onChange={(_event, value) => setSystemInstructions(value)}
-                      aria-label="System instructions input"
-                      {...(isSystemInstructionsReadOnly && { readOnlyVariant: "default" })}
-                    />
-                    {isSystemInstructionsReadOnly ? (
-                      <Button variant={ButtonVariant.plain} aria-label="Edit system instructions" onClick={handleEditSystemInstructions} >
-                        <PencilAltIcon />
-                      </Button>
-                    ) : (
-                      // Show Save and Cancel buttons when editing
-                      <Split>
-                        <SplitItem>
-                          <Button variant={ButtonVariant.plain} aria-label="Save system instructions" onClick={handleSaveSystemInstructions}>
-                            <CheckIcon />
+                <FormGroup label="System instructions" fieldId="system-instructions"> 
+                  <InputGroup> 
+                    <TextInput id="system-instructions-input" type="text" value={systemInstructions} onChange={(_event, value) => setSystemInstructions(value)} aria-label="System instructions input" {...(isSystemInstructionsReadOnly && {readOnlyVariant: "default"})} /> 
+                    {isSystemInstructionsReadOnly ? ( 
+                      <Button variant={ButtonVariant.plain} aria-label="Edit system instructions" onClick={handleEditSystemInstructions} > <PencilAltIcon /> </Button> 
+                    ) : ( 
+                      <Split> 
+                        <SplitItem> 
+                          <Button variant={ButtonVariant.plain} aria-label="Save system instructions" onClick={handleSaveSystemInstructions}> 
+                            <CheckIcon /> 
                           </Button>
                         </SplitItem>
                         <SplitItem>
-                          <Button variant={ButtonVariant.plain} aria-label="Cancel editing system instructions" onClick={handleCancelSystemInstructions}>
-                            <TimesIcon />
-                          </Button>
+                          <Button variant={ButtonVariant.plain} aria-label="Cancel editing system instructions" onClick={handleCancelSystemInstructions}> <TimesIcon /> </Button> 
                         </SplitItem>
-                      </Split>
-                    )}
-                  </InputGroup>
+                      </Split> 
+                    )} 
+                  </InputGroup> 
                 </FormGroup>
-
-                <FormGroup label="Additional messages" fieldId="additional-messages">
-                  <TextInput
-                    id="additional-messages-input"
-                    type="text"
-                    value={additionalMessages}
-                    onChange={(_event, value) => setAdditionalMessages(value)}
-                    aria-label="Additional messages"
-                  />
+                <FormGroup label="Additional messages" fieldId="additional-messages"> 
+                  <TextInput id="additional-messages-input" type="text" value={additionalMessages} onChange={(_event, value) => setAdditionalMessages(value)} aria-label="Additional messages" /> 
                 </FormGroup>
-                {/* Ensure separate inputValue state is passed */}
                 {createSliderGroup("slider-1", "Temperature", slider1Value, slider1InputValue, setSlider1Value, setSlider1InputValue)}
                 {createSliderGroup("slider-2", "Top P", slider2Value, slider2InputValue, setSlider2Value, setSlider2InputValue)}
                 {createSliderGroup("slider-3", "Max Tokens", slider3Value, slider3InputValue, setSlider3Value, setSlider3InputValue)}
                 {createSliderGroup("slider-4", "Frequency Penalty", slider4Value, slider4InputValue, setSlider4Value, setSlider4InputValue)}
+                <FormGroup fieldId="streaming-switch"> 
+                  <Switch id="streaming-switch" label="Streaming" aria-label="Toggle streaming" isChecked={isStreamingEnabled} hasCheckIcon isReversed onChange={(_event, checked) => setIsStreamingEnabled(checked)} /> 
 
-                <FormGroup fieldId="streaming-switch">
-                  <Switch
-                    id="streaming-switch"
-                    label="Streaming"
-                    aria-label="Toggle streaming"
-                    isChecked={isStreamingEnabled}
-                    hasCheckIcon
-                    isReversed
-                    onChange={(_event, checked) => setIsStreamingEnabled(checked)}
-                  />
                 </FormGroup>
               </Form>
             </AccordionContent>
           </AccordionItem>
-
+          {/* Configuration Accordion Item */}
           <AccordionItem isExpanded={expandedAccordionItems.includes('configuration-item')}>
-            <AccordionToggle
-              onClick={() => handleAccordionToggle('configuration-item')}
-              id="configuration-item"
-            >
-              <Title headingLevel="h1" size="xl"> Configuration </Title>
-            </AccordionToggle>
-            <AccordionContent id="configuration-content">
+            <AccordionToggle onClick={() => handleAccordionToggle('configuration-item')} id="configuration-item" > <Title headingLevel="h1" size="xl"> Configuration </Title> </AccordionToggle>
+            <AccordionContent id="configuration-content" className="pf-v6-u-p-md">
               <Form>
-                <FormGroup label="Built-in tools" fieldId="builtin-tools-group">
-                  <Stack hasGutter>
-                    {builtInTools.map(tool => (
-                      <StackItem key={tool.id}> {/* Moved key to StackItem */}
-                        <Switch
-                          id={tool.id}
-                          label={tool.label}
-                          aria-label={`Enable ${tool.label}`}
-                          name={tool.id}
-                          isChecked={checkedBuiltInTools[tool.id] || false}
-                          onChange={handleBuiltInToolChange}
-                          hasCheckIcon
-                          style={{ marginBottom: 'var(--pf-v5-global--spacer--sm)' }}
-                        />
-                      </StackItem>
-                    ))}
-                  </Stack>
-                </FormGroup>
-                <FormGroup label="MCP servers" fieldId="mcp-servers-group">
-                  <Stack hasGutter>
-                    {mcpServers.map(server => (
-                      <StackItem key={server.id}> {/* Moved key to StackItem */}
-                        <Switch
-                          id={server.id}
-                          label={server.label}
-                          aria-label={`Enable ${server.label}`}
-                          name={server.id}
-                          isChecked={checkedMcpServers[server.id] || false}
-                          onChange={handleMcpServerChange}
-                          hasCheckIcon
-                          style={{ marginBottom: 'var(--pf-v5-global--spacer--sm)' }}
-                        />
-                      </StackItem>
-                    ))}
+                 <FormGroup label="Built-in tools" fieldId="builtin-tools-group"> 
+                  <Stack> 
+                    {builtInTools.map(tool => ( 
+                      <StackItem key={tool.id}> 
+                        <Switch id={tool.id} label={tool.label} aria-label={`Enable ${tool.label}`} name={tool.id} isChecked={checkedBuiltInTools[tool.id] || false} onChange={handleBuiltInToolChange} hasCheckIcon /> 
+                      </StackItem> 
+                    ))} 
+                  </Stack> 
+                 </FormGroup>
+                 <FormGroup label="MCP servers" fieldId="mcp-servers-group"> 
+                  <Stack> 
+                    {mcpServers.map(server => ( 
+                      <StackItem key={server.id}> 
+                        <Switch id={server.id} label={server.label} aria-label={`Enable ${server.label}`} name={server.id} isChecked={checkedMcpServers[server.id] || false} onChange={handleMcpServerChange} hasCheckIcon /> 
+                      </StackItem> 
+                    ))} 
                   </Stack>
                 </FormGroup>
               </Form>
@@ -449,18 +398,12 @@ const Dashboard: React.FunctionComponent = () => {
     </DrawerPanelContent>
   );
 
-  // Define the main content area which now houses the Chatbot
-  const drawerContent = (
-    // Ensure PageSection fills space and doesn't scroll itself
-    <PageSection
-      hasBodyWrapper={false}
-      isFilled
-    >
-      {/* Use Chatbot without ConversationHistoryNav wrapper */}
-      <Chatbot
-        displayMode={ChatbotDisplayMode.embedded} // Pass displayMode directly if needed by Chatbot
+  // Chatbot component structure remains largely the same
+  const chatbotComponent = (
+     <Chatbot
+        displayMode={ChatbotDisplayMode.embedded}
       >
-        <ChatbotContent style={{ flexGrow: 1, overflowY: 'auto' }}> {/* Allow content to grow and scroll */}
+        <ChatbotContent>
           <MessageBox announcement={announcement}>
             <ChatbotWelcomePrompt
               title="Hi, Llama Stack User!"
@@ -469,7 +412,7 @@ const Dashboard: React.FunctionComponent = () => {
             {messages.map((message, index) => {
               if (index === messages.length - 1) {
                 return (
-                  <React.Fragment key={message.id}> {/* Use Fragment */}
+                  <React.Fragment key={message.id}>
                     <div ref={scrollToBottomRef}></div>
                     <Message {...message} />
                   </React.Fragment>
@@ -488,16 +431,27 @@ const Dashboard: React.FunctionComponent = () => {
           <ChatbotFootnote {...footnoteProps} />
         </ChatbotFooter>
       </Chatbot>
-    </PageSection>
   );
 
-
   return (
-    <Drawer isExpanded={true} isInline={true} position="right">
-      <DrawerContent panelContent={panelContent}>
-        {drawerContent}
-      </DrawerContent>
-    </Drawer>
+    // PageSection is now the main container
+    <PageSection
+      hasBodyWrapper={false}
+      isFilled
+      padding={{ default: 'noPadding' }} // Remove default padding to allow drawer edges to align
+      style={{ height: '100%', position: 'relative' }} // Needed for potential absolute positioning within drawer
+    >
+      {/* Drawer is now INSIDE the PageSection */}
+      <Drawer isExpanded={true} isInline={true} position="right">
+         {/* DrawerContent wraps the main content (Chatbot) and defines the panel */}
+         <DrawerContent panelContent={settingsPanelContent}>
+            {/* The main content area of the drawer holds the Chatbot */}
+            <DrawerContentBody style={{ overflowY: 'hidden', display: 'flex', flexDirection: 'column' }}> {/* Control overflow and layout */}
+               {chatbotComponent}
+            </DrawerContentBody>
+         </DrawerContent>
+      </Drawer>
+    </PageSection>
   );
 };
 
