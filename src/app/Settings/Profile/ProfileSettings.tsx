@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { PageSection, Title } from '@patternfly/react-core';
+import { CompassContent, CompassMainHeader, CompassPanel, Title } from '@patternfly/react-core';
 import { useDocumentTitle } from '@app/utils/useDocumentTitle';
 
 const ProfileSettings: React.FunctionComponent = () => {
-  useDocumentTitle("Profile Settings");
+  useDocumentTitle('Profile Settings');
 
   return (
-    <PageSection hasBodyWrapper={false}>
-      <Title headingLevel="h1" size="lg">
-        Profile Settings Page Title
-      </Title>
-    </PageSection>
+    <CompassContent>
+      <CompassMainHeader title={<Title headingLevel="h1">Profile Settings</Title>} />
+      <CompassPanel>
+        Some profile settings stuff here...
+      </CompassPanel>
+    </CompassContent>
   );
-
-}
+};
 
 export { ProfileSettings };

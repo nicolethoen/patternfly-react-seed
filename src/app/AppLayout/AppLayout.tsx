@@ -1,43 +1,144 @@
 import * as React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
+  ActionList,
+  ActionListGroup,
+  ActionListItem,
   Button,
-  Masthead,
+  Compass,
+  CompassHeader,
+  CompassMessageBar,
+  CompassPanel,
   MastheadBrand,
   MastheadLogo,
-  MastheadMain,
-  MastheadToggle,
-  Nav,
-  NavExpandable,
-  NavItem,
-  NavList,
-  Page,
-  PageSidebar,
-  PageSidebarBody,
-  SkipToContent,
+  Tab,
+  TabContent,
+  Tabs,
+  TabsComponent,
+  TabTitleText,
+  Tooltip,
 } from '@patternfly/react-core';
 import { IAppRoute, IAppRouteGroup, routes } from '@app/routes';
-import { BarsIcon } from '@patternfly/react-icons';
+import CubeIcon from '@patternfly/react-icons/dist/esm/icons/cube-icon';
+import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
+import pfBackground from '../bgimages/pf-background.svg';
 
 interface IAppLayout {
   children: React.ReactNode;
 }
 
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
-  const masthead = (
-    <Masthead>
-      <MastheadMain>
-        <MastheadToggle>
-          <Button
-            icon={<BarsIcon />}
-            variant="plain"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-label="Global navigation"
+  const navigate = useNavigate();
+  const location = useLocation();
+  const subTabsRef = React.useRef<HTMLDivElement>(null);
+
+  // Determine active tabs based on current route
+  const getActiveTabIndex = () => {
+    const path = location.pathname;
+    if (path === '/') return 0;
+    if (path === '/support') return 1;
+    if (path.startsWith('/settings')) return 2;
+    return 0;
+  };
+
+  const getActiveSubtabIndex = () => {
+    const path = location.pathname;
+    if (path === '/settings/general') return 0;
+    if (path === '/settings/profile') return 1;
+    return 0;
+  };
+
+  const [activeTab, setActiveTab] = React.useState(getActiveTabIndex());
+  const [activeSubtab, setActiveSubtab] = React.useState(getActiveSubtabIndex());
+
+  // Update active tab when route changes
+  React.useEffect(() => {
+    setActiveTab(getActiveTabIndex());
+    setActiveSubtab(getActiveSubtabIndex());
+  }, [location.pathname]);
+
+  const handleTabSelect = (_event: React.MouseEvent<HTMLElement>, tabIndex: number | string) => {
+    const idx = tabIndex as number;
+    setActiveTab(idx);
+    if (idx === 0) navigate('/');
+    else if (idx === 1) navigate('/support');
+    else if (idx === 2) navigate('/settings/general');
+  };
+
+  const handleSubtabSelect = (_event: React.MouseEvent<HTMLElement>, tabIndex: number | string) => {
+    const idx = tabIndex as number;
+    setActiveSubtab(idx);
+    if (idx === 0) navigate('/settings/general');
+    else if (idx === 1) navigate('/settings/profile');
+  };
+
+  const navContent = (
+    <>
+      <CompassPanel isPill hasNoPadding>
+        <Tabs
+          activeKey={activeTab}
+          isNav
+          onSelect={handleTabSelect}
+          component={TabsComponent.nav}
+          aria-label="Main navigation"
+          inset={{ default: 'insetXl' }}
+        >
+          <Tab
+            tabContentId="subtabs"
+            tabContentRef={subTabsRef}
+            eventKey={0}
+            title={<TabTitleText>Dashboard</TabTitleText>}
           />
-        </MastheadToggle>
-        <MastheadBrand data-codemods>
-          <MastheadLogo data-codemods>
+          <Tab eventKey={1} title={<TabTitleText>Support</TabTitleText>} />
+          <Tab eventKey={2} title={<TabTitleText>Settings</TabTitleText>} />
+        </Tabs>
+      </CompassPanel>
+      {activeTab === 2 && (
+        <CompassPanel isPill hasNoPadding>
+          <TabContent id="subtabs" ref={subTabsRef}>
+            <Tabs
+              activeKey={activeSubtab}
+              isSubtab
+              isNav
+              onSelect={handleSubtabSelect}
+              aria-label="Settings navigation"
+              inset={{ default: 'insetXl' }}
+            >
+              <Tab eventKey={0} title={<TabTitleText>General</TabTitleText>} />
+              <Tab eventKey={1} title={<TabTitleText>Profile</TabTitleText>} />
+            </Tabs>
+          </TabContent>
+        </CompassPanel>
+      )}
+    </>
+  );
+
+  const sidebarContent = (
+    <CompassPanel isPill>
+      <ActionList isIconList isVertical>
+        <ActionListGroup>
+          <ActionListItem>
+            <Tooltip content="Components">
+              <Button variant="plain" icon={<CubeIcon />} aria-label="Components" />
+            </Tooltip>
+          </ActionListItem>
+        </ActionListGroup>
+        <ActionListGroup>
+          <ActionListItem>
+            <Tooltip content="Help">
+              <Button variant="plain" icon={<HelpIcon />} aria-label="Help" />
+            </Tooltip>
+          </ActionListItem>
+        </ActionListGroup>
+      </ActionList>
+    </CompassPanel>
+  );
+
+  const headerContent = (
+    <CompassHeader
+      logo={
+        <MastheadBrand>
+          <MastheadLogo>
             <svg height="40px" viewBox="0 0 679 158">
               <title>PatternFly logo</title>
               <defs>
@@ -82,72 +183,29 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
             </svg>
           </MastheadLogo>
         </MastheadBrand>
-      </MastheadMain>
-    </Masthead>
+      }
+      nav={navContent}
+    />
   );
 
-  const location = useLocation();
-
-  const renderNavItem = (route: IAppRoute, index: number) => (
-    <NavItem key={`${route.label}-${index}`} id={`${route.label}-${index}`} isActive={route.path === location.pathname}>
-      <NavLink
-        to={route.path}
-      >
-        {route.label}
-      </NavLink>
-    </NavItem>
+  const footerContent = (
+    <CompassMessageBar>
+      <CompassPanel>
+        Message bar
+      </CompassPanel>
+    </CompassMessageBar>
   );
 
-  const renderNavGroup = (group: IAppRouteGroup, groupIndex: number) => (
-    <NavExpandable
-      key={`${group.label}-${groupIndex}`}
-      id={`${group.label}-${groupIndex}`}
-      title={group.label}
-      isActive={group.routes.some((route) => route.path === location.pathname)}
-    >
-      {group.routes.map((route, idx) => route.label && renderNavItem(route, idx))}
-    </NavExpandable>
-  );
-
-  const Navigation = (
-    <Nav id="nav-primary-simple">
-      <NavList id="nav-list-simple">
-        {routes.map(
-          (route, idx) => route.label && (!route.routes ? renderNavItem(route, idx) : renderNavGroup(route, idx)),
-        )}
-      </NavList>
-    </Nav>
-  );
-
-  const Sidebar = (
-    <PageSidebar>
-      <PageSidebarBody>{Navigation}</PageSidebarBody>
-    </PageSidebar>
-  );
-
-  const pageId = 'primary-app-container';
-
-  const PageSkipToContent = (
-    <SkipToContent
-      onClick={(event) => {
-        event.preventDefault();
-        const primaryContentContainer = document.getElementById(pageId);
-        primaryContentContainer?.focus();
-      }}
-      href={`#${pageId}`}
-    >
-      Skip to Content
-    </SkipToContent>
-  );
   return (
-    <Page
-      mainContainerId={pageId}
-      masthead={masthead}
-      sidebar={sidebarOpen && Sidebar}
-      skipToContent={PageSkipToContent}
-    >
-      {children}
-    </Page>
+    <Compass
+      header={headerContent}
+      sidebarStart={sidebarContent}
+      main={children}
+      sidebarEnd={sidebarContent}
+      footer={footerContent}
+      backgroundSrcDark={pfBackground}
+      backgroundSrcLight={pfBackground}
+    />
   );
 };
 
