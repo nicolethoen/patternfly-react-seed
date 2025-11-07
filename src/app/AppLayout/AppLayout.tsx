@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   ActionList,
   ActionListGroup,
@@ -11,15 +11,14 @@ import {
   CompassPanel,
   MastheadBrand,
   MastheadLogo,
-  Switch,
   Tab,
   TabContent,
+  TabTitleText,
   Tabs,
   TabsComponent,
-  TabTitleText,
   Tooltip,
 } from '@patternfly/react-core';
-import { IAppRoute, IAppRouteGroup, routes } from '@app/routes';
+import { useTheme } from '@app/utils/ThemeContext';
 import CubeIcon from '@patternfly/react-icons/dist/esm/icons/cube-icon';
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
 import MoonIcon from '@patternfly/react-icons/dist/esm/icons/moon-icon';
@@ -34,47 +33,32 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const subTabsRef = React.useRef<HTMLDivElement>(null);
-
-  // Theme state and toggle
-  const [isDarkTheme, setIsDarkTheme] = React.useState(() => {
-    const stored = localStorage.getItem('theme');
-    return stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  });
-
-  React.useEffect(() => {
-    const htmlElement = document.documentElement;
-    if (isDarkTheme) {
-      htmlElement.classList.add('pf-v6-theme-dark');
-    } else {
-      htmlElement.classList.remove('pf-v6-theme-dark');
-    }
-    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
-  }, [isDarkTheme]);
+  const { isDarkTheme, toggleTheme } = useTheme();
 
   // Determine active tabs based on current route
-  const getActiveTabIndex = () => {
+  const getActiveTabIndex = React.useCallback(() => {
     const path = location.pathname;
     if (path === '/') return 0;
     if (path === '/support') return 1;
     if (path.startsWith('/settings')) return 2;
     return 0;
-  };
+  }, [location.pathname]);
 
-  const getActiveSubtabIndex = () => {
+  const getActiveSubtabIndex = React.useCallback(() => {
     const path = location.pathname;
     if (path === '/settings/general') return 0;
     if (path === '/settings/profile') return 1;
     return 0;
-  };
+  }, [location.pathname]);
 
-  const [activeTab, setActiveTab] = React.useState(getActiveTabIndex());
-  const [activeSubtab, setActiveSubtab] = React.useState(getActiveSubtabIndex());
+  const [activeTab, setActiveTab] = React.useState(getActiveTabIndex);
+  const [activeSubtab, setActiveSubtab] = React.useState(getActiveSubtabIndex);
 
   // Update active tab when route changes
   React.useEffect(() => {
     setActiveTab(getActiveTabIndex());
     setActiveSubtab(getActiveSubtabIndex());
-  }, [location.pathname]);
+  }, [getActiveTabIndex, getActiveSubtabIndex]);
 
   const handleTabSelect = (_event: React.MouseEvent<HTMLElement>, tabIndex: number | string) => {
     const idx = tabIndex as number;
@@ -154,7 +138,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
                 variant="plain"
                 icon={isDarkTheme ? <SunIcon /> : <MoonIcon />}
                 aria-label={isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme'}
-                onClick={() => setIsDarkTheme(!isDarkTheme)}
+                onClick={toggleTheme}
               />
             </Tooltip>
           </ActionListItem>
