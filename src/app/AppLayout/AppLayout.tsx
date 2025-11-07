@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   ActionList,
@@ -18,6 +18,7 @@ import {
   TabsComponent,
   Tooltip,
 } from '@patternfly/react-core';
+import { MessageBar } from '@patternfly/chatbot';
 import { useTheme } from '@app/utils/ThemeContext';
 import CubeIcon from '@patternfly/react-icons/dist/esm/icons/cube-icon';
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
@@ -34,6 +35,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const location = useLocation();
   const subTabsRef = React.useRef<HTMLDivElement>(null);
   const { isDarkTheme, toggleTheme } = useTheme();
+  const [isThinking, setIsThinking] = useState(false);
 
   // Determine active tabs based on current route
   const getActiveTabIndex = React.useCallback(() => {
@@ -201,10 +203,24 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     />
   );
 
+  const handleSendMessage = () => {
+    setIsThinking(true);
+    setTimeout(() => {
+      setIsThinking(false);
+    }, 10000); // 10 seconds
+  };
+
   const footerContent = (
     <CompassMessageBar>
-      <CompassPanel>
-        Message bar
+      <CompassPanel isPill hasNoPadding hasNoBorder>
+        <MessageBar
+          isCompact
+          onSendMessage={handleSendMessage}
+          alwayShowSendButton
+          hasAttachButton={false}
+          hasAiIndicator
+          isThinking={isThinking}
+        />
       </CompassPanel>
     </CompassMessageBar>
   );
