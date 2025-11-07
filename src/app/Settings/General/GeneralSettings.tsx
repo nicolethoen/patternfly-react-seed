@@ -8,10 +8,11 @@ const GeneralSettings: React.FunctionComponent = () => {
   const { isDarkTheme, toggleTheme } = useTheme();
 
   return (
-    <CompassContent>
+    <>
       <CompassMainHeader title={<Title headingLevel="h1">General Settings</Title>} />
-      <CompassPanel>
-        <Form>
+      <CompassContent>
+        <CompassPanel>
+          <Form>
           <FormGroup label="Theme" fieldId="theme-toggle">
             <Switch
               id="theme-toggle"
@@ -21,9 +22,10 @@ const GeneralSettings: React.FunctionComponent = () => {
               aria-label="Toggle dark mode"
             />
           </FormGroup>
-        </Form>
-      </CompassPanel>
-    </CompassContent>
+          </Form>
+        </CompassPanel>
+      </CompassContent>
+    </>
   );
 };
 

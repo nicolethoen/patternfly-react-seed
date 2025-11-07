@@ -20,10 +20,11 @@ export interface ISupportProps {
 }
 
 const Support: React.FunctionComponent<ISupportProps> = () => (
-  <CompassContent>
+  <>
     <CompassMainHeader title={<Title headingLevel="h1">Support</Title>} />
-    <CompassPanel>
-      <EmptyState variant={EmptyStateVariant.full} titleText="Empty State (Stub Support Module)" icon={CubesIcon}>
+    <CompassContent>
+      <CompassPanel>
+        <EmptyState variant={EmptyStateVariant.full} titleText="Empty State (Stub Support Module)" icon={CubesIcon}>
         <EmptyStateBody>
           <Content>
             <Content component="p">
@@ -47,9 +48,10 @@ const Support: React.FunctionComponent<ISupportProps> = () => (
             <Button variant="link">Action area</Button>
           </EmptyStateActions>
         </EmptyStateFooter>
-      </EmptyState>
-    </CompassPanel>
-  </CompassContent>
+        </EmptyState>
+      </CompassPanel>
+    </CompassContent>
+  </>
 );
 
 export { Support };

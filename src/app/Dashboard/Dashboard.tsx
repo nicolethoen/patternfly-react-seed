@@ -28,10 +28,11 @@ import {
 } from '@patternfly/react-icons';
 
 const Dashboard: React.FunctionComponent = () => (
-  <CompassContent>
+  <>
     <CompassMainHeader title={<Title headingLevel="h1">Dashboard</Title>} />
-    <CompassPanel>
-      <Grid hasGutter>
+    <CompassContent>
+      <CompassPanel>
+        <Grid hasGutter>
         {/* Status Cards */}
         <GridItem lg={3} md={6} sm={12}>
           <Card isFullHeight>
@@ -153,10 +154,11 @@ const Dashboard: React.FunctionComponent = () => (
               </DescriptionList>
             </CardBody>
           </Card>
-        </GridItem>        
-      </Grid>
-    </CompassPanel>
-  </CompassContent>
+        </GridItem>
+        </Grid>
+      </CompassPanel>
+    </CompassContent>
+  </>
 );
 
 export { Dashboard };

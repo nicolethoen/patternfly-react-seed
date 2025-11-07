@@ -6,12 +6,14 @@ const ProfileSettings: React.FunctionComponent = () => {
   useDocumentTitle('Profile Settings');
 
   return (
-    <CompassContent>
+    <>
       <CompassMainHeader title={<Title headingLevel="h1">Profile Settings</Title>} />
-      <CompassPanel>
-        Some profile settings stuff here...
-      </CompassPanel>
-    </CompassContent>
+      <CompassContent>
+        <CompassPanel>
+          Some profile settings stuff here...
+        </CompassPanel>
+      </CompassContent>
+    </>
   );
 };
 
