@@ -11,6 +11,7 @@ import {
   CompassPanel,
   MastheadBrand,
   MastheadLogo,
+  Switch,
   Tab,
   TabContent,
   Tabs,
@@ -21,6 +22,8 @@ import {
 import { IAppRoute, IAppRouteGroup, routes } from '@app/routes';
 import CubeIcon from '@patternfly/react-icons/dist/esm/icons/cube-icon';
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
+import MoonIcon from '@patternfly/react-icons/dist/esm/icons/moon-icon';
+import SunIcon from '@patternfly/react-icons/dist/esm/icons/sun-icon';
 import pfBackground from '../bgimages/pf-background.svg';
 
 interface IAppLayout {
@@ -31,6 +34,22 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const subTabsRef = React.useRef<HTMLDivElement>(null);
+
+  // Theme state and toggle
+  const [isDarkTheme, setIsDarkTheme] = React.useState(() => {
+    const stored = localStorage.getItem('theme');
+    return stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  });
+
+  React.useEffect(() => {
+    const htmlElement = document.documentElement;
+    if (isDarkTheme) {
+      htmlElement.classList.add('pf-v6-theme-dark');
+    } else {
+      htmlElement.classList.remove('pf-v6-theme-dark');
+    }
+    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
 
   // Determine active tabs based on current route
   const getActiveTabIndex = () => {
@@ -127,6 +146,16 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
           <ActionListItem>
             <Tooltip content="Help">
               <Button variant="plain" icon={<HelpIcon />} aria-label="Help" />
+            </Tooltip>
+          </ActionListItem>
+          <ActionListItem>
+            <Tooltip content={isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme'}>
+              <Button
+                variant="plain"
+                icon={isDarkTheme ? <SunIcon /> : <MoonIcon />}
+                aria-label={isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme'}
+                onClick={() => setIsDarkTheme(!isDarkTheme)}
+              />
             </Tooltip>
           </ActionListItem>
         </ActionListGroup>
