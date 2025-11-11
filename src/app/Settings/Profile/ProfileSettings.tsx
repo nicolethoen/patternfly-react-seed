@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CompassContent, CompassMainHeader, CompassPanel, Title } from '@patternfly/react-core';
+import { CompassContent, CompassPanel, Title } from '@patternfly/react-core';
 import { useDocumentTitle } from '@app/utils/useDocumentTitle';
 
 const ProfileSettings: React.FunctionComponent = () => {
@@ -7,9 +7,9 @@ const ProfileSettings: React.FunctionComponent = () => {
 
   return (
     <>
-      <CompassMainHeader title={<Title headingLevel="h1">Profile Settings</Title>} />
       <CompassContent>
         <CompassPanel>
+          <Title headingLevel="h1">Profile Settings</Title>
           Some profile settings stuff here...
         </CompassPanel>
       </CompassContent>

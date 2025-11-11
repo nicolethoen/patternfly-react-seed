@@ -4,13 +4,20 @@ import {
   ActionList,
   ActionListGroup,
   ActionListItem,
+  Avatar,
   Button,
   Compass,
   CompassHeader,
   CompassMessageBar,
   CompassPanel,
+  Dropdown,
+  DropdownItem,
+  DropdownList,
+  Flex,
   MastheadBrand,
   MastheadLogo,
+  MenuToggle,
+  MenuToggleElement,
   Tab,
   TabContent,
   TabTitleText,
@@ -25,6 +32,7 @@ import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
 import MoonIcon from '@patternfly/react-icons/dist/esm/icons/moon-icon';
 import SunIcon from '@patternfly/react-icons/dist/esm/icons/sun-icon';
 import pfBackground from '../bgimages/pf-background.svg';
+import avatarSvg from '../bgimages/avatar.svg';
 
 interface IAppLayout {
   children: React.ReactNode;
@@ -36,6 +44,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const subTabsRef = React.useRef<HTMLDivElement>(null);
   const { isDarkTheme, toggleTheme } = useTheme();
   const [isThinking, setIsThinking] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Determine active tabs based on current route
   const getActiveTabIndex = React.useCallback(() => {
@@ -118,25 +127,59 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     </>
   );
 
+  const userDropdownItems = (
+    <>
+      <DropdownItem>My profile</DropdownItem>
+      <DropdownItem>User management</DropdownItem>
+      <DropdownItem>Logout</DropdownItem>
+    </>
+  );
+
+  const userDropdown = (
+    <Dropdown
+      isOpen={isDropdownOpen}
+      onSelect={() => setIsDropdownOpen(false)}
+      onOpenChange={(isOpen: boolean) => setIsDropdownOpen(isOpen)}
+      popperProps={{ position: 'right' }}
+      toggle={(toggleRef: React.Ref<MenuToggleElement>) => (
+        <MenuToggle
+          ref={toggleRef}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          isExpanded={isDropdownOpen}
+          variant="plain"
+          isCircle
+        >
+          <Flex alignItems={{ default: 'alignItemsCenter' }} gap={{ default: 'gapMd' }}>
+            User Name
+            <Avatar src={avatarSvg} alt="User avatar" size="md" />
+          </Flex>
+        </MenuToggle>
+      )}
+    >
+      <DropdownList>{userDropdownItems}</DropdownList>
+    </Dropdown>
+  );
+
   const sidebarContent = (
     <CompassPanel isPill>
       <ActionList isIconList isVertical>
         <ActionListGroup>
           <ActionListItem>
             <Tooltip content="Components">
-              <Button variant="plain" icon={<CubeIcon />} aria-label="Components" />
+              <Button isCircle variant="plain" icon={<CubeIcon />} aria-label="Components" />
             </Tooltip>
           </ActionListItem>
         </ActionListGroup>
         <ActionListGroup>
           <ActionListItem>
             <Tooltip content="Help">
-              <Button variant="plain" icon={<HelpIcon />} aria-label="Help" />
+              <Button isCircle  variant="plain" icon={<HelpIcon />} aria-label="Help" />
             </Tooltip>
           </ActionListItem>
           <ActionListItem>
             <Tooltip content={isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme'}>
               <Button
+                isCircle
                 variant="plain"
                 icon={isDarkTheme ? <SunIcon /> : <MoonIcon />}
                 aria-label={isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme'}
@@ -196,10 +239,11 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
                 </g>
               </g>
             </svg>
-          </MastheadLogo>
-        </MastheadBrand>
+        </MastheadLogo>
+      </MastheadBrand>
       }
       nav={navContent}
+      profile={userDropdown}
     />
   );
 
