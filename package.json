@@ -72,9 +72,11 @@
   "dependencies": {
     "@patternfly/patternfly": "6.5.0-prerelease.20",
     "@patternfly/chatbot": "6.5.0-prerelease.10",
-    "@patternfly/react-core": "6.5.0-prerelease.9",
+    "@patternfly/react-core": "6.5.0-prerelease.11",
     "@patternfly/react-icons": "6.5.0-prerelease.4",
     "@patternfly/react-styles": "6.5.0-prerelease.4",
+    "@patternfly/react-table": "6.5.0-prerelease.11",
+    "@patternfly/react-code-editor": "6.5.0-prerelease.11",
     "react": "^18",
     "react-dom": "^18",
     "sirv-cli": "^3.0.1"
