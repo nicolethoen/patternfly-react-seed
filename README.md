@@ -105,6 +105,20 @@ If you are using an AI-enabled IDE, the AI agent will automatically leverage the
 
 By following these rules—either directly or via your AI assistant—you'll ensure your app is maintainable, accessible, and consistent with PatternFly best practices.
 
+### 🚨 Compass Theme Branch
+
+This branch (`compass_theme`) uses **Compass theme components** from PatternFly's **Generative UI** initiative. These components are optimized for AI-assisted development but are **not yet published** on the main PatternFly website.
+
+**Important for AI agents and developers:**
+- 📖 Compass component docs are on **[staging.patternfly.org/ai/generative-uis](https://staging.patternfly.org/ai/generative-uis/overview)**
+- 🔍 Standard PatternFly components remain on **[patternfly.org](https://www.patternfly.org/)**
+- 📝 See [Compass Theme Guide](./ai-documentation/guidelines/compass-theme-guide.md) for complete instructions
+
+**AI agents should:**
+1. Check staging.patternfly.org for Compass/Generative UI components first
+2. Fall back to patternfly.org for standard components
+3. Note that PatternFly MCP won't have Compass docs yet
+
 ## Multi environment configuration
 This project uses [dotenv-webpack](https://www.npmjs.com/package/dotenv-webpack) for exposing environment variables to your code. Either export them at the system level like `export MY_ENV_VAR=http://dev.myendpoint.com && npm run start:dev` or simply drop a `.env` file in the root that contains your key-value pairs like below:
 

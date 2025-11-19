@@ -4,6 +4,7 @@ Core development rules for AI coders building PatternFly React applications.
 
 ## Related Files
 
+- [**Compass Theme Guide**](./compass-theme-guide.md) - 🚨 **IMPORTANT: Generative UI & staging site documentation**
 - [**Component Rules**](./component-architecture.md) - Component structure requirements
 - [**Styling Rules**](./styling-standards.md) - CSS and styling requirements
 - [**Layout Rules**](../components/layout/README.md) - Page structure requirements
@@ -48,13 +49,17 @@ import { UserIcon } from '@patternfly/react-icons';
 
 ### Documentation Requirements
 
-1. **Check [PatternFly.org](https://www.patternfly.org/) first** - Primary source for APIs
-2. **Check the [PatternFly React GitHub repository](https://github.com/patternfly/patternfly-react)** for the latest source code, examples, and release notes
-3. **Use "View Code" sections** - Copy working examples
-4. **Reference version-specific docs** - Match your project's PatternFly version
-5. **Provide context to AI** - Share links and code snippets when asking for help
+1. **🚨 Check for Compass/Generative UI components** - See [Compass Theme Guide](./compass-theme-guide.md)
+2. **Check [staging.patternfly.org/ai/generative-uis](https://staging.patternfly.org/ai/generative-uis/overview) first** - For Compass components and Generative UI patterns
+3. **Check [PatternFly.org](https://www.patternfly.org/)** - For standard published components
+4. **Check the [PatternFly React GitHub repository](https://github.com/patternfly/patternfly-react)** for the latest source code, examples, and release notes
+5. **Use "View Code" sections** - Copy working examples from staging or production site
+6. **Reference version-specific docs** - Match your project's PatternFly version
+7. **Provide context to AI** - Share links and code snippets when asking for help
 
-> For the most up-to-date documentation, use both the official docs and the source repositories. When using AI tools, encourage them to leverage context7 to fetch the latest documentation from these sources.
+> **COMPASS THEME BRANCH**: This branch uses unpublished Compass components. Always check the [staging site](https://staging.patternfly.org/ai/generative-uis/overview) first. The PatternFly MCP will NOT have Compass component documentation yet. See [Compass Theme Guide](./compass-theme-guide.md) for details.
+
+> For standard components, use both the official docs and the source repositories. When using AI tools, encourage them to leverage context7 to fetch the latest documentation from these sources.
 
 ### Accessibility Requirements
 

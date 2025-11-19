@@ -1,6 +1,11 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Mock PatternFly Chatbot MessageBar to avoid monaco-editor dependency
+vi.mock('@patternfly/chatbot/dist/dynamic/MessageBar', () => ({
+  MessageBar: vi.fn(() => null),
+}));
+
 // Mock CSS imports
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -21,7 +26,6 @@ global.ResizeObserver = class ResizeObserver {
   observe = vi.fn();
   unobserve = vi.fn();
   disconnect = vi.fn();
-  constructor(callback: ResizeObserverCallback) {}
 };
 
 // Mock IntersectionObserver
@@ -29,5 +33,4 @@ global.IntersectionObserver = class IntersectionObserver {
   observe = vi.fn();
   unobserve = vi.fn();
   disconnect = vi.fn();
-  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {}
 } as any;

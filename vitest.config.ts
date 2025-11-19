@@ -14,6 +14,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@app': path.resolve(__dirname, './src/app'),
+      // Mock monaco-editor to avoid bundling it in tests
+      'monaco-editor': path.resolve(__dirname, './src/test/mocks/monaco-editor.ts'),
     },
+  },
+  ssr: {
+    noExternal: [/@patternfly\/.*/],
   },
 });

@@ -5,6 +5,14 @@
 
 Essential rules and guidelines for AI coders working with PatternFly React applications.
 
+## 🚨 IMPORTANT: Compass Theme Branch
+
+**This branch uses unpublished Compass components!**
+
+→ **[Quick Reference for AI Agents](./COMPASS-QUICK-REF.md)**  
+→ **[Complete Compass Theme Guide](./guidelines/compass-theme-guide.md)**  
+→ **[Staging Site Documentation](https://staging.patternfly.org/ai/generative-uis/overview)**
+
 ## Quick Navigation
 
 ### 🚀 Setup & Environment
@@ -14,6 +22,7 @@ Essential rules and guidelines for AI coders working with PatternFly React appli
 
 ### 📚 Core Rules
 - [**PatternFly Guidelines**](./guidelines/README.md) - Core development principles
+- [**Compass Theme Guide**](./guidelines/compass-theme-guide.md) - **🚨 IMPORTANT: Generative UI & staging site documentation**
 - [**Component Rules**](./guidelines/component-architecture.md) - Component structure requirements
 - [**Styling Rules**](./guidelines/styling-standards.md) - CSS and styling requirements
 - [**Deployment Guide**](./guidelines/deployment-guide.md) - How to deploy prototypes

@@ -6,54 +6,45 @@ import { describe, expect, it, test } from 'vitest';
 
 describe('App tests', () => {
   test('should render default App component', () => {
-    const { asFragment } = render(<App />);
-
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it('should render a nav-toggle button', () => {
     render(<App />);
 
-    expect(screen.getByRole('button', { name: 'Global navigation' })).toBeVisible();
+    // Test that key components are present
+    expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument();
+    expect(screen.getByText('PatternFly logo')).toBeInTheDocument();
+    expect(screen.getByText('User Name')).toBeInTheDocument();
   });
 
-  // I'm fairly sure that this test not going to work properly no matter what we do since JSDOM doesn't actually
-  // draw anything. We could potentially make something work, likely using a different test environment, but
-  // using Cypress for this kind of test would be more efficient.
-  it.skip('should hide the sidebar on smaller viewports', () => {
-    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 600 });
-
+  it('should render navigation tabs', () => {
     render(<App />);
 
-    window.dispatchEvent(new Event('resize'));
-
-    expect(screen.queryByRole('link', { name: 'Dashboard' })).not.toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Dashboard' })).toBeVisible();
+    expect(screen.getByRole('tab', { name: 'Support' })).toBeVisible();
+    expect(screen.getByRole('tab', { name: 'Settings' })).toBeVisible();
   });
 
-  it('should expand the sidebar on larger viewports', () => {
+  it('should render sidebar buttons', () => {
     render(<App />);
 
-    act(() => {
-      window.dispatchEvent(new Event('resize'));
-    });
+    // Get all buttons with these names (there are two sidebars with the same buttons)
+    const componentsButtons = screen.getAllByRole('button', { name: 'Components' });
+    const helpButtons = screen.getAllByRole('button', { name: 'Help' });
+    const themeButtons = screen.getAllByRole('button', { name: 'Switch to dark theme' });
 
-    expect(screen.getByRole('link', { name: 'Dashboard' })).toBeVisible();
+    expect(componentsButtons.length).toBeGreaterThan(0);
+    expect(helpButtons.length).toBeGreaterThan(0);
+    expect(themeButtons.length).toBeGreaterThan(0);
+    expect(componentsButtons[0]).toBeVisible();
   });
 
-  it('should hide the sidebar when clicking the nav-toggle button', async () => {
+  it('should allow tab navigation', async () => {
     const user = userEvent.setup();
 
     render(<App />);
 
-    act(() => {
-      window.dispatchEvent(new Event('resize'));
-    });
-    const button = screen.getByRole('button', { name: 'Global navigation' });
+    const supportTab = screen.getByRole('tab', { name: 'Support' });
 
-    expect(screen.getByRole('link', { name: 'Dashboard' })).toBeVisible();
+    await user.click(supportTab);
 
-    await user.click(button);
-
-    expect(screen.queryByRole('link', { name: 'Dashboard' })).not.toBeInTheDocument();
+    expect(supportTab).toHaveAttribute('aria-selected', 'true');
   });
 });

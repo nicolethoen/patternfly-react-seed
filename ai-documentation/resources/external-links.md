@@ -15,7 +15,23 @@ External resources are essential for staying current with PatternFly updates, fi
 
 ## Official PatternFly Documentation
 
-### Primary Documentation
+### ⚠️ COMPASS THEME: Staging Site Documentation
+
+**🚨 IMPORTANT for compass_theme branch:**
+
+This project uses **Compass theme components** that are **not yet published** on the main PatternFly site. For Compass/Generative UI components, always check the staging site first:
+
+- **[Staging PatternFly - Generative UIs Overview](https://staging.patternfly.org/ai/generative-uis/overview)** - 🎯 PRIMARY source for Compass components
+- **[Staging PatternFly - Generative UI Section](https://staging.patternfly.org/ai/generative-uis)** - Browse all Generative UI documentation
+- **[React Flow with PatternFly](https://staging.patternfly.org/ai/generative-uis/react-flow)** - Pipelines, topology, and workflow visualizations
+
+**When to use staging vs production:**
+- ✅ **Staging site** → Compass components, Generative UI patterns, React Flow integration, unpublished components
+- ✅ **Production site** → Standard PatternFly components, published features
+
+📖 **See [Compass Theme Guide](../guidelines/compass-theme-guide.md) for complete instructions**
+
+### Primary Documentation (Production)
 - **[PatternFly.org](https://www.patternfly.org/)** - Main documentation site with component APIs and examples
 - **[PatternFly Design Guidelines](https://www.patternfly.org/get-started/design)** - Design principles and patterns
 - **[PatternFly React Components](https://www.patternfly.org/components)** - Complete component library documentation
@@ -32,6 +48,7 @@ External resources are essential for staying current with PatternFly updates, fi
 ### Specialized Features
 - **[PatternFly Charts](https://www.patternfly.org/charts/about)** - Data visualization guidelines
 - **[PatternFly AI - Chatbot](https://www.patternfly.org/patternfly-ai/chatbot/overview)** - AI chatbot components
+- **[React Flow with PatternFly](https://staging.patternfly.org/ai/generative-uis/react-flow)** - 🚨 Staging site: Pipelines, topology, and workflow visualizations
 - **[Accessibility Guidelines](https://www.patternfly.org/accessibility/accessibility-fundamentals)** - WCAG compliance and best practices
 
 ## Official Repositories
