@@ -138,7 +138,7 @@ const Dashboard: React.FunctionComponent = () => {
             </ChatbotHeaderSelectorDropdown>
           </ChatbotHeaderActions>
         </ChatbotHeader>
-        <ChatbotContent>
+        <ChatbotContent isPrimary>
           <MessageBox announcement={announcement}>
             <ChatbotWelcomePrompt
               title="Hello, Chatbot User"
@@ -158,8 +158,8 @@ const Dashboard: React.FunctionComponent = () => {
             })}
           </MessageBox>
         </ChatbotContent>
-        <ChatbotFooter>
-          <MessageBar onSendMessage={handleSend} hasMicrophoneButton isSendButtonDisabled={isSendButtonDisabled} />
+        <ChatbotFooter isPrimary>
+          <MessageBar hasAiIndicator onSendMessage={handleSend} hasMicrophoneButton isSendButtonDisabled={isSendButtonDisabled} />
           <ChatbotFootnote {...footnoteProps} />
         </ChatbotFooter>
       </Chatbot>
