@@ -275,7 +275,6 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       sidebarStart={sidebarContent}
       main={children}
       sidebarEnd={sidebarContent}
-      footer={footerContent}
       backgroundSrcDark={pfBackground}
       backgroundSrcLight={pfBackground}
     />
