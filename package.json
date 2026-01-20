@@ -78,6 +78,7 @@
     "@patternfly/react-icons": "6.5.0-prerelease.12",
     "@patternfly/react-styles": "6.5.0-prerelease.10",
     "@patternfly/react-table": "6.5.0-prerelease.28",
+    "@patternfly/widgetized-dashboard": "^1.0.0-prerelease.1",
     "react": "^18",
     "react-dom": "^18",
     "sirv-cli": "^3.0.1"
