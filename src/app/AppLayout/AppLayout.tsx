@@ -31,7 +31,8 @@ import CubeIcon from '@patternfly/react-icons/dist/esm/icons/cube-icon';
 import HelpIcon from '@patternfly/react-icons/dist/esm/icons/help-icon';
 import MoonIcon from '@patternfly/react-icons/dist/esm/icons/moon-icon';
 import SunIcon from '@patternfly/react-icons/dist/esm/icons/sun-icon';
-import pfBackground from '../bgimages/pf-background.svg';
+import bgDark from '../bgimages/glass2-dark.png';
+import bgLight from '../bgimages/glass2-light.png';
 import avatarSvg from '../bgimages/avatar.svg';
 
 interface IAppLayout {
@@ -50,7 +51,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const getActiveTabIndex = React.useCallback(() => {
     const path = location.pathname;
     if (path === '/') return 0;
-    if (path === '/support') return 1;
+    if (path === '/dashboard2') return 1;
     if (path.startsWith('/settings')) return 2;
     return 0;
   }, [location.pathname]);
@@ -75,7 +76,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     const idx = tabIndex as number;
     setActiveTab(idx);
     if (idx === 0) navigate('/');
-    else if (idx === 1) navigate('/support');
+    else if (idx === 1) navigate('/dashboard2');
     else if (idx === 2) navigate('/settings/general');
   };
 
@@ -103,7 +104,7 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
             eventKey={0}
             title={<TabTitleText>Dashboard</TabTitleText>}
           />
-          <Tab eventKey={1} title={<TabTitleText>Support</TabTitleText>} />
+          <Tab eventKey={1} title={<TabTitleText>Dashboard 2</TabTitleText>} />
           <Tab eventKey={2} title={<TabTitleText>Settings</TabTitleText>} />
         </Tabs>
       </CompassPanel>
@@ -275,8 +276,8 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
       sidebarStart={sidebarContent}
       main={children}
       sidebarEnd={sidebarContent}
-      backgroundSrcDark={pfBackground}
-      backgroundSrcLight={pfBackground}
+      backgroundSrcDark={bgDark}
+      backgroundSrcLight={bgLight}
     />
   );
 };

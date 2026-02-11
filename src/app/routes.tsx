@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Dashboard } from '@app/Dashboard/Dashboard';
-import { Support } from '@app/Support/Support';
+import { Dashboard2 } from '@app/Dashboard2/Dashboard2';
 import { GeneralSettings } from '@app/Settings/General/GeneralSettings';
 import { ProfileSettings } from '@app/Settings/Profile/ProfileSettings';
 import { NotFound } from '@app/NotFound/NotFound';
@@ -31,11 +31,11 @@ const routes: AppRouteConfig[] = [
     title: 'PatternFly Seed | Main Dashboard',
   },
   {
-    element: <Support />,
+    element: <Dashboard2 />,
     exact: true,
-    label: 'Support',
-    path: '/support',
-    title: 'PatternFly Seed | Support Page',
+    label: 'Dashboard 2',
+    path: '/dashboard2',
+    title: 'PatternFly Seed | Dashboard 2',
   },
   {
     label: 'Settings',
