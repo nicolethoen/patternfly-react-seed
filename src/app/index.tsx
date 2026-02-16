@@ -1,6 +1,7 @@
 import * as React from 'react';
 import '@patternfly/patternfly/patternfly.css';
 import '@patternfly/chatbot/dist/css/main.css';
+import '@patternfly/widgetized-dashboard/dist/esm/styles.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AppLayout } from '@app/AppLayout/AppLayout';
 import { AppRoutes } from '@app/routes';

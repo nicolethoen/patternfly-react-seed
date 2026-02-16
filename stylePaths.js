@@ -12,6 +12,7 @@ export const stylePaths = [
   path.resolve('./node_modules/@patternfly/chatbot/dist/css'),
   path.resolve('./node_modules/@patternfly/chatbot/node_modules/@patternfly/react-styles/css'),
   path.resolve('./node_modules/@patternfly/react-code-editor/node_modules/@patternfly/react-styles/css'),
+  path.resolve('./node_modules/@patternfly/widgetized-dashboard/dist/esm'),
   path.resolve('./node_modules/@patternfly/widgetized-dashboard/node_modules/@patternfly/react-styles/css'),
   path.resolve('./node_modules/@patternfly/widgetized-dashboard/node_modules/@patternfly/react-core/dist/esm'),
   path.resolve('./node_modules/react-grid-layout/css'),

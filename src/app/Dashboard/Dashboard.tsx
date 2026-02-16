@@ -1,9 +1,17 @@
 import * as React from 'react';
 import {
   Badge,
+  Button,
   Card,
   CardBody,
   CompassContent,
+  CompassMainHeader,
+  CompassPanel,
+  SearchInput,
+  Toolbar,
+  ToolbarContent,
+  ToolbarGroup,
+  ToolbarItem,
   DescriptionList,
   DescriptionListDescription,
   DescriptionListGroup,
@@ -15,6 +23,7 @@ import {
   DropdownList,
   Flex,
   FlexItem,
+  Icon,
   Label,
   Progress,
   ProgressSize,
@@ -30,7 +39,9 @@ import {
   CubesIcon,
   ServerIcon,
 } from '@patternfly/react-icons';
-import { WidgetLayout, WidgetMapping, ExtendedTemplateConfig } from '@patternfly/widgetized-dashboard';
+import RhUiPanelOpenFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-panel-open-fill-icon';
+import RhUiPanelCloseFillIcon from '@patternfly/react-icons/dist/esm/icons/rh-ui-panel-close-fill-icon';
+import { WidgetLayout, WidgetMapping, ExtendedTemplateConfig, AddWidgetsButton } from '@patternfly/widgetized-dashboard';
 import Chatbot, { ChatbotDisplayMode } from '@patternfly/chatbot/dist/dynamic/Chatbot';
 import ChatbotContent from '@patternfly/chatbot/dist/dynamic/ChatbotContent';
 import ChatbotWelcomePrompt from '@patternfly/chatbot/dist/dynamic/ChatbotWelcomePrompt';
@@ -50,15 +61,17 @@ import ChatbotHeader, {
 const SystemHealthWidget = () => (
   <Card isPlain isFullHeight>
     <CardBody>
-      <Flex alignItems={{ default: 'alignItemsCenter' }} style={{ marginBottom: '1rem' }}>
+      <Flex direction={{ default: 'column' }} alignItems={{ default: 'alignItemsCenter' }}>
         <FlexItem>
-          <CheckCircleIcon color="var(--pf-t--global--icon--color--status--success--default)" />
+          <Flex>
+            <Icon status="success" size="xl"><CheckCircleIcon /></Icon>
+            <Title headingLevel="h2" size="2xl">
+              98.5%
+            </Title>
+          </Flex>
         </FlexItem>
-      </Flex>
-      <Title headingLevel="h2" size="2xl">
-        98.5%
-      </Title>
-      <Label color="green">Operational</Label>
+        <Label color="green">Operational</Label>
+      </Flex> 
     </CardBody>
   </Card>
 );
@@ -66,10 +79,17 @@ const SystemHealthWidget = () => (
 const ActiveUsersWidget = () => (
   <Card isPlain isFullHeight>
     <CardBody>
-      <Title headingLevel="h2" size="2xl">
-        1,284
-      </Title>
-      <Badge>+12% this week</Badge>
+      <Flex direction={{ default: 'column' }} alignItems={{ default: 'alignItemsCenter' }}>
+        <FlexItem>
+          <Flex>
+            <Icon status="info" size="xl"><UsersIcon /></Icon>
+            <Title headingLevel="h2" size="2xl">
+              1,284
+            </Title>
+          </Flex>
+        </FlexItem>
+        <Badge>+12% this week</Badge>
+      </Flex>
     </CardBody>
   </Card>
 );
@@ -77,15 +97,17 @@ const ActiveUsersWidget = () => (
 const WarningsWidget = () => (
   <Card isPlain isFullHeight>
     <CardBody>
-      <Flex alignItems={{ default: 'alignItemsCenter' }} style={{ marginBottom: '1rem' }}>
+      <Flex direction={{ default: 'column' }} alignItems={{ default: 'alignItemsCenter' }}>
         <FlexItem>
-          <ExclamationTriangleIcon color="var(--pf-t--global--icon--color--status--warning--default)" />
+          <Flex>
+            <Icon status="warning" size="xl"><ExclamationTriangleIcon /></Icon>
+            <Title headingLevel="h2" size="2xl">
+              3
+            </Title>
+          </Flex>
         </FlexItem>
+        <Label color="orange">Needs attention</Label>
       </Flex>
-      <Title headingLevel="h2" size="2xl">
-        3
-      </Title>
-      <Label color="orange">Needs attention</Label>
     </CardBody>
   </Card>
 );
@@ -93,15 +115,17 @@ const WarningsWidget = () => (
 const ActiveTasksWidget = () => (
   <Card isPlain isFullHeight>
     <CardBody>
-      <Flex alignItems={{ default: 'alignItemsCenter' }} style={{ marginBottom: '1rem' }}>
+      <Flex direction={{ default: 'column' }} alignItems={{ default: 'alignItemsCenter' }}>
         <FlexItem>
-          <InfoCircleIcon color="var(--pf-t--global--icon--color--status--info--default)" />
+          <Flex>
+            <Icon status="info" size="xl"><InfoCircleIcon /></Icon>
+            <Title headingLevel="h2" size="2xl">
+              42
+            </Title>
+          </Flex>
         </FlexItem>
+        <Label color="blue">In progress</Label>
       </Flex>
-      <Title headingLevel="h2" size="2xl">
-        42
-      </Title>
-      <Label color="blue">In progress</Label>
     </CardBody>
   </Card>
 );
@@ -109,22 +133,12 @@ const ActiveTasksWidget = () => (
 const ResourceUtilizationWidget = () => (
   <Card isPlain isFullHeight>
     <CardBody>
-      <div style={{ marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '0.5rem' }}>CPU Usage</div>
+      <Flex rowGap={{ default: 'rowGapMd' }} direction={{ default: 'column' }}>
         <Progress value={45} title="CPU" size={ProgressSize.sm} />
-      </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '0.5rem' }}>Memory</div>
         <Progress value={51} title="Memory" size={ProgressSize.sm} variant={ProgressVariant.warning} />
-      </div>
-      <div style={{ marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '0.5rem' }}>Storage</div>
         <Progress value={78} title="Storage" size={ProgressSize.sm} variant={ProgressVariant.danger} />
-      </div>
-      <div>
-        <div style={{ marginBottom: '0.5rem' }}>Network</div>
         <Progress value={32} title="Network" size={ProgressSize.sm} variant={ProgressVariant.success} />
-      </div>
+      </Flex>
     </CardBody>
   </Card>
 );
@@ -132,7 +146,7 @@ const ResourceUtilizationWidget = () => (
 const SystemInformationWidget = () => (
   <Card isPlain isFullHeight>
     <CardBody>
-      <DescriptionList>
+      <DescriptionList columnModifier={{ default: '2Col'}}>
         <DescriptionListGroup>
           <DescriptionListTerm>Hostname</DescriptionListTerm>
           <DescriptionListDescription>prod-server-01</DescriptionListDescription>
@@ -164,7 +178,7 @@ const widgetMapping: WidgetMapping = {
     defaults: { w: 1, h: 3, maxH: 6, minH: 2 },
     config: {
       title: 'System Health',
-      icon: <CheckCircleIcon />,
+
     },
     renderWidget: () => <SystemHealthWidget />,
   },
@@ -172,7 +186,7 @@ const widgetMapping: WidgetMapping = {
     defaults: { w: 1, h: 3, maxH: 6, minH: 2 },
     config: {
       title: 'Active Users',
-      icon: <UsersIcon />,
+
     },
     renderWidget: () => <ActiveUsersWidget />,
   },
@@ -180,7 +194,7 @@ const widgetMapping: WidgetMapping = {
     defaults: { w: 1, h: 3, maxH: 6, minH: 2 },
     config: {
       title: 'Warnings',
-      icon: <ExclamationTriangleIcon />,
+
     },
     renderWidget: () => <WarningsWidget />,
   },
@@ -188,7 +202,7 @@ const widgetMapping: WidgetMapping = {
     defaults: { w: 1, h: 3, maxH: 6, minH: 2 },
     config: {
       title: 'Active Tasks',
-      icon: <CubesIcon />,
+
     },
     renderWidget: () => <ActiveTasksWidget />,
   },
@@ -196,7 +210,7 @@ const widgetMapping: WidgetMapping = {
     defaults: { w: 2, h: 4, maxH: 8, minH: 3 },
     config: {
       title: 'Resource Utilization',
-      icon: <ChartLineIcon />,
+
     },
     renderWidget: () => <ResourceUtilizationWidget />,
   },
@@ -204,7 +218,7 @@ const widgetMapping: WidgetMapping = {
     defaults: { w: 2, h: 4, maxH: 8, minH: 3 },
     config: {
       title: 'System Information',
-      icon: <ServerIcon />,
+
     },
     renderWidget: () => <SystemInformationWidget />,
   },
@@ -247,7 +261,9 @@ const initialTemplate: ExtendedTemplateConfig = {
 };
 
 const Dashboard: React.FunctionComponent = () => {
+  const [isChatDrawerExpanded, setIsChatDrawerExpanded] = React.useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [filterValue, setFilterValue] = React.useState('');
   const [selectedModel, setSelectedModel] = React.useState('Granite 7B');
   const [messages, setMessages] = React.useState<any[]>([]);
   const [announcement, setAnnouncement] = React.useState('');
@@ -369,10 +385,40 @@ const Dashboard: React.FunctionComponent = () => {
   );
 
   return (
-    <Drawer isExpanded isInline position="start" isPill>
+    <Drawer isExpanded={isChatDrawerExpanded} isInline position="start" isPill>
       <DrawerContent panelContent={panelContent}>
         <CompassContent>
-          <div style={{ height: '100vh', width: '100%', overflow: 'auto', position: 'relative' }}>
+            <CompassMainHeader style={{ margin: 'var(--pf-t--global--spacer--sm)' }} >
+              <CompassPanel>
+              <Toolbar hasNoPadding>
+              <ToolbarContent>
+                <ToolbarItem>
+                  <Button
+                    variant="plain"
+                    aria-label="Toggle chat drawer"
+                    onClick={() => setIsChatDrawerExpanded((prev) => !prev)}
+                  >
+                    {isChatDrawerExpanded ? <RhUiPanelCloseFillIcon /> : <RhUiPanelOpenFillIcon />}
+                  </Button>
+                </ToolbarItem>
+                <ToolbarItem>
+                  <SearchInput
+                    placeholder="Filter widgets"
+                    value={filterValue}
+                    onChange={(_event, value) => setFilterValue(value)}
+                    onClear={() => setFilterValue('')}
+                  />
+                </ToolbarItem>
+                <ToolbarGroup align={{ default: 'alignEnd' }}>
+                  <ToolbarItem>
+                    <AddWidgetsButton onClick={() => {}} />
+                  </ToolbarItem>
+                </ToolbarGroup>
+              </ToolbarContent>
+            </Toolbar>
+            </CompassPanel>
+            </CompassMainHeader>
+          <div style={{ height: '100%', width: '100%', overflow: 'auto', position: 'relative' }}>
             <WidgetLayout
               widgetMapping={widgetMapping}
               initialTemplate={template}

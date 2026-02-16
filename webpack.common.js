@@ -19,6 +19,10 @@ export default (env) => {
     module: {
       rules: [
         {
+          test: /\.m?js$/,
+          resolve: { fullySpecified: false },
+        },
+        {
           test: /\.(tsx|ts|jsx)?$/,
           use: [
             {
